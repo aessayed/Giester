@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { useLang } from '../i18n/Langcontext';
+import { useLang } from '../i18n/LangContext';
 
 export default function Reisen() {
   const { t } = useLang();

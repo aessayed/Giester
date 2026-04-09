@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Award, BookOpen, MapPin, Star } from 'lucide-react';
-import { useLang } from '../i18n/Langcontext';
+import { useLang } from '../i18n/LangContext';
 
 export default function UeberMich() {
   const { t } = useLang();

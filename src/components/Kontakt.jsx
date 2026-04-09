@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle, ShieldCheck, Clock3, Globe2, Star } from 'lucide-react';
-import { useLang } from '../i18n/Langcontext';
+import { useLang } from '../i18n/LangContext';
 
 const inputBase = {
   width:'100%', background:'transparent', border:'none',

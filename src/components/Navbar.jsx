@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { useLang } from '../i18n/Langcontext';
+import { useLang } from '../i18n/LangContext';
 
 export default function Navbar() {
   const { lang, toggle, t } = useLang();

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Ship, Plane, Compass, Heart, Users, Sunset } from 'lucide-react';
-import { useLang } from '../i18n/Langcontext';
+import { useLang } from '../i18n/LangContext';
 
 const icons = [Ship, Compass, Sunset, Heart, Plane, Users];
 

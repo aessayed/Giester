@@ -1,5 +1,5 @@
 import './index.css'
-import { LangProvider } from './i18n/Langcontext.jsx'
+import { LangProvider } from './i18n/LangContext.jsx'
 import Navbar   from './components/Navbar'
 import Hero     from './components/Hero'
 import Angebote from './components/Angebote'

@@ -1,5 +1,5 @@
 import { ChevronDown, Globe } from 'lucide-react';
-import { useLang } from '../i18n/Langcontext';
+import { useLang } from '../i18n/LangContext';
 
 const tickerDE = [
   { name: 'Bangkok',      subtitle: 'Schwimmende Märkte', emoji: '🇹🇭' },
