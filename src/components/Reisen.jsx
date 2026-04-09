@@ -41,7 +41,7 @@ export default function Reisen() {
         <div style={{
           display:'grid',
           gridTemplateColumns:'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
-          gap:'18px',
+          gap:'6px',
         }}>
           {t.reisen.destinations.map((d, i) => (
             <div
