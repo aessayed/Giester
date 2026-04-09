@@ -1,22 +1,17 @@
 import { useEffect, useRef } from 'react';
 import { Ship, Plane, Compass, Heart, Users, Sunset } from 'lucide-react';
+import { useLang } from '../i18n/Langcontext';
 
-const services = [
-  { icon: Ship,    title: 'Kreuzfahrten',   subtitle: 'Fluss & Meer',          desc: 'Elegante Seereisen und romantische Flusskreuzfahrten durch das Mittelmeer und darüber hinaus.' },
-  { icon: Compass, title: 'Rundreisen',     subtitle: 'Studien & Abenteuer',   desc: 'Sorgfältig geplante Rund- und Studienreisen für neugierige Entdecker fremder Kulturen.' },
-  { icon: Sunset,  title: 'Pauschalreisen', subtitle: 'Entspannt & Sorglos',   desc: 'Komplettangebote aller namhaften Veranstalter — angepasst an Ihren Geschmack und Ihr Budget.' },
-  { icon: Heart,   title: 'Wellness-Reisen',subtitle: 'Erholung & Gesundheit', desc: 'Luxuriöse Auszeiten in den besten Wellness-Resorts weltweit für Körper und Seele.' },
-  { icon: Plane,   title: 'Flüge',          subtitle: 'Linien & Charter',      desc: 'Linienflieger, Charterflüge und maßgeschneiderte Verbindungen für jedes Reiseziel.' },
-  { icon: Users,   title: 'Gruppenreisen',  subtitle: 'Gemeinsam Erleben',     desc: 'Professionell organisierte Reisen für Gruppen, Vereine und Unternehmen jeder Größe.' },
-];
+const icons = [Ship, Compass, Sunset, Heart, Plane, Users];
 
 export default function Angebote() {
+  const { t } = useLang();
   const ref = useRef(null);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.1 }
+      { threshold: 0.08 }
     );
     ref.current?.querySelectorAll('.section-reveal').forEach(el => obs.observe(el));
     return () => obs.disconnect();
@@ -24,12 +19,9 @@ export default function Angebote() {
 
   return (
     <section id="angebote" ref={ref} style={{ padding: 'clamp(72px,10vw,120px) 0', background: 'var(--sand)', position: 'relative' }}>
-
-      {/* Side label – hidden on mobile via CSS class */}
       <div className="side-label" style={{
         position: 'absolute', left: '18px', top: '50%',
-        transform: 'translateY(-50%) rotate(-90deg)',
-        transformOrigin: 'center center',
+        transform: 'translateY(-50%) rotate(-90deg)', transformOrigin: 'center center',
         fontSize: '0.58rem', letterSpacing: '0.4em', textTransform: 'uppercase',
         color: 'rgba(201,168,76,0.35)', whiteSpace: 'nowrap', pointerEvents: 'none',
       }}>
@@ -42,34 +34,32 @@ export default function Angebote() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '18px' }}>
             <div style={{ width: '48px', height: '1px', background: 'var(--gold)', flexShrink: 0 }} />
             <span style={{ fontSize: '0.68rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--gold)' }}>
-              Was ich anbiete
+              {t.angebote.eyebrow}
             </span>
           </div>
-          <h2 className="font-display" style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', fontWeight: 300, lineHeight: 1.1, color: 'var(--ink)' }}>
-            Ihr perfekter<br />
-            <span style={{ fontStyle: 'italic' }}>Traumurlaub</span>
+          <h2 className="font-display" style={{ fontSize: 'clamp(2.2rem,5vw,4rem)', fontWeight: 300, lineHeight: 1.1, color: 'var(--ink)' }}>
+            {t.angebote.headline1}<br />
+            <span style={{ fontStyle: 'italic' }}>{t.angebote.headline2}</span>
           </h2>
         </div>
 
-        {/* Card grid */}
+        {/* Cards */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
           gap: '2px',
-        }}>
-          {services.map((s, i) => {
-            const Icon = s.icon;
+        }}>{console.log(t.angebote.services)}
+          {t?.angebote?.services?.map((s, i)  => {
+            const Icon = icons[i] || Ship;
             return (
               <div
-                key={s.title}
+                key={i}
                 className="section-reveal card-hover"
                 style={{
                   background: i % 2 === 0 ? 'rgba(232,223,200,0.5)' : 'rgba(245,240,232,0.8)',
                   padding: 'clamp(28px,4vw,40px) clamp(22px,3vw,36px)',
                   transitionDelay: `${i * 0.08}s`,
-                  cursor: 'default',
-                  position: 'relative',
-                  overflow: 'hidden',
+                  position: 'relative', overflow: 'hidden',
                 }}
               >
                 {/* Background number */}
@@ -81,12 +71,12 @@ export default function Angebote() {
                   {String(i + 1).padStart(2, '0')}
                 </div>
 
-                {/* Icon box */}
+                {/* Icon */}
                 <div style={{
                   width: '44px', height: '44px',
                   border: '1px solid rgba(201,168,76,0.4)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  marginBottom: '22px', color: 'var(--gold)', flexShrink: 0,
+                  marginBottom: '22px', color: 'var(--gold)',
                 }}>
                   <Icon size={20} strokeWidth={1.5} />
                 </div>
@@ -97,16 +87,19 @@ export default function Angebote() {
                 <h3 className="font-display" style={{ fontSize: '1.55rem', fontWeight: 400, color: 'var(--ink)', marginBottom: '12px' }}>
                   {s.title}
                 </h3>
-                <p style={{ color: 'var(--ink-soft)', lineHeight: 1.72, fontSize: '0.9rem', fontWeight: 300 }}>
+                <p style={{ color: 'var(--ink-soft)', lineHeight: 1.75, fontSize: '0.9rem', fontWeight: 300, marginBottom: '12px' }}>
                   {s.desc}
                 </p>
+                {/* Extra line — richer content */}
+                <p style={{ color: 'var(--sage)', lineHeight: 1.65, fontSize: '0.82rem', fontWeight: 300, fontStyle: 'italic', borderTop: '1px solid rgba(201,168,76,0.15)', paddingTop: '12px', marginTop: '4px' }}>
+                  {s.extra}
+                </p>
 
-                {/* Hover accent line */}
+                {/* Hover accent */}
                 <div style={{
                   position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px',
                   background: 'linear-gradient(90deg, var(--gold), transparent)',
-                  transform: 'scaleX(0)', transformOrigin: 'left',
-                  transition: 'transform 0.4s ease',
+                  transform: 'scaleX(0)', transformOrigin: 'left', transition: 'transform 0.4s ease',
                 }} />
               </div>
             );
@@ -115,10 +108,10 @@ export default function Angebote() {
 
         {/* Bottom CTA */}
         <div className="section-reveal" style={{ textAlign: 'center', marginTop: '56px' }}>
-          <p className="font-display" style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', fontStyle: 'italic', color: 'var(--ink-soft)', marginBottom: '24px' }}>
-            „Und weitere touristische Leistungen nach Ihren Wünschen."
+          <p className="font-display" style={{ fontSize: 'clamp(1.1rem,2.5vw,1.4rem)', fontStyle: 'italic', color: 'var(--ink-soft)', marginBottom: '24px' }}>
+            {t.angebote.quote}
           </p>
-          <a href="#kontakt" className="gold-btn">Jetzt anfragen</a>
+          <a href="#kontakt" className="gold-btn">{t.angebote.cta}</a>
         </div>
       </div>
     </section>

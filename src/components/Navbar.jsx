@@ -1,17 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-
-const links = [
-  { label: 'Home',      href: '#home' },
-  { label: 'Angebote', href: '#angebote' },
-  { label: 'Über mich',href: '#ueber' },
-  { label: 'Reisen',   href: '#reisen' },
-  { label: 'Kontakt',  href: '#kontakt' },
-];
+import { useLang } from '../i18n/Langcontext';
 
 export default function Navbar() {
-  const [scrolled,  setScrolled]  = useState(false);
-  const [menuOpen,  setMenuOpen]  = useState(false);
+  const { lang, toggle, t } = useLang();
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -19,11 +13,18 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // lock body scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
+
+  const links = [
+    { label: t.nav.home,     href: '#home' },
+    { label: t.nav.angebote, href: '#angebote' },
+    { label: t.nav.ueber,    href: '#ueber' },
+    { label: t.nav.reisen,   href: '#reisen' },
+    { label: t.nav.kontakt,  href: '#kontakt' },
+  ];
 
   const navBg = scrolled
     ? 'rgba(245,240,232,0.96)'
@@ -49,68 +50,82 @@ export default function Navbar() {
             Eva Geister
           </div>
           <div style={{ fontSize: '0.58rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)', marginTop: '3px' }}>
-            Reiseberatung
+            {lang === 'de' ? 'Reiseberatung' : 'Travel Consulting'}
           </div>
         </a>
 
         {/* Desktop links */}
-        <div className="nav-desktop" style={{ display: 'flex', gap: '36px', alignItems: 'center' }}>
+        <div className="nav-desktop" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
           {links.map(l => (
             <a key={l.label} href={l.href} className="nav-link">{l.label}</a>
           ))}
+
+          {/* Language toggle */}
+          <button
+            onClick={toggle}
+            style={{
+              background: 'none', border: '1px solid rgba(201,168,76,0.4)',
+              cursor: 'pointer', padding: '5px 12px',
+              fontSize: '0.68rem', letterSpacing: '0.15em',
+              color: 'var(--gold)', fontFamily: 'DM Sans, sans-serif',
+              textTransform: 'uppercase', transition: 'all 0.3s',
+              display: 'flex', alignItems: 'center', gap: '6px',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--gold)'; e.currentTarget.style.color = 'var(--ink)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--gold)'; }}
+            title={lang === 'de' ? 'Switch to English' : 'Auf Deutsch wechseln'}
+          >
+            <span style={{ fontSize: '0.9rem' }}>{lang === 'de' ? '🇬🇧' : '🇩🇪'}</span>
+            {lang === 'de' ? 'EN' : 'DE'}
+          </button>
+
           <a href="#kontakt" className="gold-btn" style={{ fontSize: '0.68rem', padding: '10px 22px' }}>
-            Anfrage senden
+            {t.nav.cta}
           </a>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="nav-mobile-btn"
-          onClick={() => setMenuOpen(o => !o)}
-          aria-label="Menü öffnen"
-          style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            color: 'var(--ink)', padding: '4px',
-            display: 'none', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile row: lang toggle + hamburger */}
+        <div className="nav-mobile-btn" style={{ display: 'none', alignItems: 'center', gap: '12px' }}>
+          <button
+            onClick={toggle}
+            style={{
+              background: 'none', border: '1px solid rgba(201,168,76,0.4)',
+              cursor: 'pointer', padding: '4px 10px',
+              fontSize: '0.65rem', letterSpacing: '0.12em',
+              color: 'var(--gold)', fontFamily: 'DM Sans, sans-serif',
+              textTransform: 'uppercase',
+            }}
+          >
+            {lang === 'de' ? '🇬🇧 EN' : '🇩🇪 DE'}
+          </button>
+          <button
+            onClick={() => setMenuOpen(o => !o)}
+            aria-label="Menu"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink)', padding: '4px', display:'flex', alignItems:'center' }}
+          >
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile dropdown */}
-      <div style={{
-        maxHeight: menuOpen ? '420px' : '0',
-        overflow: 'hidden',
-        transition: 'max-height 0.4s ease',
-      }}>
-        <div style={{
-          padding: '24px clamp(20px,5vw,40px) 32px',
-          borderTop: '1px solid rgba(201,168,76,0.15)',
-        }}>
+      <div style={{ maxHeight: menuOpen ? '500px' : '0', overflow: 'hidden', transition: 'max-height 0.4s ease' }}>
+        <div style={{ padding: '24px clamp(20px,5vw,40px) 32px', borderTop: '1px solid rgba(201,168,76,0.15)' }}>
           {links.map(l => (
             <a
-              key={l.label}
-              href={l.href}
-              className="nav-link"
+              key={l.label} href={l.href} className="nav-link"
               onClick={() => setMenuOpen(false)}
-              style={{
-                display: 'block',
-                padding: '13px 0',
-                borderBottom: '1px solid rgba(201,168,76,0.1)',
-                fontSize: '0.85rem',
-              }}
+              style={{ display: 'block', padding: '13px 0', borderBottom: '1px solid rgba(201,168,76,0.1)', fontSize: '0.85rem' }}
             >
               {l.label}
             </a>
           ))}
           <a
-            href="#kontakt"
-            className="gold-btn"
+            href="#kontakt" className="gold-btn"
             onClick={() => setMenuOpen(false)}
             style={{ marginTop: '24px', fontSize: '0.72rem', padding: '12px 28px' }}
           >
-            Anfrage senden
+            {t.nav.cta}
           </a>
         </div>
       </div>

@@ -1,16 +1,16 @@
-
 import './index.css'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
+import { LangProvider } from './i18n/Langcontext'
+import Navbar   from './components/Navbar'
+import Hero     from './components/Hero'
 import Angebote from './components/Angebote'
 import UeberMich from './components/Uebermich'
-import Reisen from './components/Reisen'
-import Kontakt from './components/Kontakt'
-import Footer from './components/Footer'
+import Reisen   from './components/Reisen'
+import Kontakt  from './components/Kontakt'
+import Footer   from './components/Footer'
 
 export default function App() {
   return (
-    <>
+    <LangProvider>
       <Navbar />
       <Hero />
       <Angebote />
@@ -18,6 +18,6 @@ export default function App() {
       <Reisen />
       <Kontakt />
       <Footer />
-    </>
+    </LangProvider>
   )
 }
